@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
-    <string name="login">http://kindlypay.ru/block/android/authorization/login.php</string>
+    <string name="login">http://kindlypay.ru/blocks/android/authorization/login.php</string>
 </resources>
