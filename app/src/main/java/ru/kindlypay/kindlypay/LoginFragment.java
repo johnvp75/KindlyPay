@@ -1,11 +1,13 @@
 package ru.kindlypay.kindlypay;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
@@ -30,6 +33,7 @@ import java.util.Map;
 
 public class LoginFragment extends Fragment {
 
+    private static final String TAG = "LoginFragment";
     private User mUser;
     private EditText mPhone,mPassword;
     private Button mLogin;
@@ -87,7 +91,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    mUser.setId(getUserId(mUser));
+                    new FetchItemsTask().execute();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -97,33 +101,18 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-
-    private int getUserId(User mUser) throws Exception{
-        URL url = new URL("@urls/login");
-        Map<String,Object> params = new LinkedHashMap<>();
-        params.put("login", mUser.getPhoneNumber());
-        params.put("password", mUser.getPassword());
-
-        StringBuilder postData = new StringBuilder();
-        for (Map.Entry<String,Object> param : params.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
-            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-            postData.append('=');
-            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+    private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String result = new KindlyPayFetchr()
+                        .getUserId(mUser,getContext().getString(R.string.login));
+                Log.i(TAG, "Fetched contents of URL: " + result);
+            } catch (IOException ioe) {
+                Log.e(TAG, "Failed to fetch URL: ", ioe);
+            }
+            return null;
         }
-        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-        conn.setDoOutput(true);
-        conn.getOutputStream().write(postDataBytes);
-
-        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-        StringBuilder sb = new StringBuilder();
-        for (int c; (c = in.read()) >= 0;)
-            sb.append((char)c);
-        return new Integer(sb.toString());
     }
+
 }
