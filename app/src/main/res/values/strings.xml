@@ -2,7 +2,12 @@
     <string name="app_name">KindlyPay</string>
     <string name="user_phone">+7(xxx)xxx-xx-xx</string>
     <string name="password">Пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
     <string name="login_button">Войти</string>
     <string name="no_connection">Отсутствует соединение с Интернетом</string>
-    <string name="regictration_link">Зарегистрироваться</string>
+    <string name="registration_link">Зарегистрироваться</string>
+    <string name="rule_for_password">Пароль должен содержать не менее 6 символов, обязательно одна цифра и одна заглавная буква</string>
+    <string name="bad_repeat_password">Пароли не совпадают!</string>
+    <string name="registration_title">Регистрация</string>
 </resources>
+

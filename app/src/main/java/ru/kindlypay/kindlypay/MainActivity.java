@@ -3,7 +3,6 @@ package ru.kindlypay.kindlypay;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends FragmentActivity {
@@ -16,7 +15,7 @@ public class MainActivity extends FragmentActivity {
         Fragment fragment=fm.findFragmentById(R.id.fragmentContainer);
 
         if(fragment==null){
-            fragment = new LoginFragment();
+//            fragment = new LoginActivity();
             fm.beginTransaction()
                     .add(R.id.fragmentContainer, fragment)
                     .commit();

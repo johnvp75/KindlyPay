@@ -18,12 +18,8 @@ import static java.security.AccessController.getContext;
 
 public class KindlyPayFetchr {
 
-    public String getUserId(User mUser,String mUrl) throws IOException {
+    private String getDataFromServer (String mUrl, Map<String,Object> params) throws IOException{
         URL url = new URL(mUrl);
-        Map<String,Object> params = new LinkedHashMap<>();
-        params.put("login", mUser.getPhoneNumber());
-        params.put("password", mUser.getPassword());
-
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String,Object> param : params.entrySet()) {
             if (postData.length() != 0) postData.append('&');
@@ -44,6 +40,16 @@ public class KindlyPayFetchr {
         StringBuilder sb = new StringBuilder();
         for (int c; (c = in.read()) >= 0;)
             sb.append((char)c);
+        conn.disconnect();
         return sb.toString();
     }
+
+    public String getUserId(User mUser,String mUrl) throws IOException {
+        Map<String,Object> params = new LinkedHashMap<>();
+        params.put("login", mUser.getPhoneNumber());
+        params.put("login_password", mUser.getPassword());
+        return getDataFromServer(mUrl,params);
+    }
+
+
 }

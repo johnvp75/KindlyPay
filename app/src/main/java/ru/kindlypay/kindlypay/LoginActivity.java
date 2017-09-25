@@ -1,40 +1,26 @@
 package ru.kindlypay.kindlypay;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Created by User on 21.09.2017.
  */
 
-public class LoginFragment extends Fragment {
+public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "LoginFragment";
+    private static final String TAG = "LoginActivity";
     private User mUser;
     private EditText mPhone,mPassword;
     private Button mLogin;
@@ -42,18 +28,14 @@ public class LoginFragment extends Fragment {
     private boolean mEndSiteTransaction;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.login_activity);
         mUser=new User();
 
 
-    }
 
-    @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
-        View v=inflater.inflate(R.layout.fragment_login,container,false);
-
-        mPhone=(EditText)v.findViewById(R.id.user_phone);
+        mPhone=(EditText)findViewById(R.id.login_user_phone);
         mPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -71,7 +53,7 @@ public class LoginFragment extends Fragment {
 
             }
         });
-        mPassword=(EditText)v.findViewById(R.id.password);
+        mPassword=(EditText)findViewById(R.id.login_password);
         mPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +71,7 @@ public class LoginFragment extends Fragment {
 
             }
         });
-        mLogin=(Button)v.findViewById(R.id.login_button);
+        mLogin=(Button)findViewById(R.id.login_button);
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,11 +83,13 @@ public class LoginFragment extends Fragment {
                     }
 
                 } catch (Exception e) {
+                    Toast.makeText(LoginActivity.this,R.string.no_connection, Toast.LENGTH_SHORT);
+                    Log.e(TAG, "Return with error ", e);
                     e.printStackTrace();
                 }
             }
         });
-        mRegistration=(TextView)v.findViewById(R.id.registration_link);
+        mRegistration=(TextView)findViewById(R.id.registration_link);
         mRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,20 +97,19 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        return v;
+
 
     }
 
-    private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
+    private class FetchItemsTask  extends AsyncTask<Void,Void,Void>{
         @Override
         protected Void doInBackground(Void... params) {
             try {
                 String result = new KindlyPayFetchr()
-                        .getUserId(mUser,getContext().getString(R.string.login));
+                        .getUserId(mUser,getString(R.string.login));
                 mEndSiteTransaction=true;
                 Log.i(TAG, "Fetched contents of URL: " + result);
             } catch (IOException ioe) {
-                Toast.makeText(getContext(),R.string.no_connection,Toast.LENGTH_SHORT).show();
                 mEndSiteTransaction=true;
                 Log.e(TAG, "Failed to fetch URL: ", ioe);
             }
