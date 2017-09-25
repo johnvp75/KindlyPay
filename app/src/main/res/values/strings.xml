@@ -3,4 +3,6 @@
     <string name="user_phone">+7(xxx)xxx-xx-xx</string>
     <string name="password">Пароль</string>
     <string name="login_button">Войти</string>
+    <string name="no_connection">Отсутствует соединение с Интернетом</string>
+    <string name="regictration_link">Зарегистрироваться</string>
 </resources>

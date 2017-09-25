@@ -9,6 +9,7 @@
         <item name="android:colorBackground">@color/blackgrey</item>
         <item name="android:buttonStyle">@style/kindlyButton</item>
         <item name="android:editTextStyle">@style/KindlyEdit</item>
+
     </style>
 
     <style name="kindlyButton" parent="Widget.AppCompat.Button">
@@ -17,7 +18,7 @@
     </style>
 
     <style name="KindlyEdit" parent="android:style/Widget.EditText">
-        <item name="android:textColor">@color/red</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

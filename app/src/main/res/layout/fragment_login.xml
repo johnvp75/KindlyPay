@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:padding="6dp"
+
     >
 
     <EditText
@@ -24,5 +25,12 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text ="@string/login_button"/>
+        android:text ="@string/login_button"/>
+    <TextView
+        android:id="@+id/registration_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="@string/regictration_link"
+        />
 </LinearLayout>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -37,6 +38,8 @@ public class LoginFragment extends Fragment {
     private User mUser;
     private EditText mPhone,mPassword;
     private Button mLogin;
+    private TextView mRegistration;
+    private boolean mEndSiteTransaction;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -91,14 +94,27 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
+                    mEndSiteTransaction=false;
                     new FetchItemsTask().execute();
+                    while (!mEndSiteTransaction){
+
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+        mRegistration=(TextView)v.findViewById(R.id.registration_link);
+        mRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG,"Нажата кнопка");
+            }
+        });
+
         return v;
+
     }
 
     private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
@@ -107,8 +123,11 @@ public class LoginFragment extends Fragment {
             try {
                 String result = new KindlyPayFetchr()
                         .getUserId(mUser,getContext().getString(R.string.login));
+                mEndSiteTransaction=true;
                 Log.i(TAG, "Fetched contents of URL: " + result);
             } catch (IOException ioe) {
+                Toast.makeText(getContext(),R.string.no_connection,Toast.LENGTH_SHORT).show();
+                mEndSiteTransaction=true;
                 Log.e(TAG, "Failed to fetch URL: ", ioe);
             }
             return null;
