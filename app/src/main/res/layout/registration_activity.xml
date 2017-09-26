@@ -5,7 +5,7 @@
     android:gravity="center"
     android:padding="6dp">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/registration_title"/>
     <EditText
@@ -14,6 +14,14 @@
         android:layout_height="wrap_content"
         android:hint="@string/user_phone"
         android:inputType="phone" />
+    <TextView
+        android:id="@+id/registration_incorrect_phone"
+        style="@style/ErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/incorrect_phone"
+        android:visibility="invisible"/>
+
 
     <EditText
         android:id="@+id/registration_password"
@@ -49,7 +57,9 @@
         android:id="@+id/registration_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text ="@string/registration_link"/>
+        android:text ="@string/registration_link"
+        android:enabled="false"
+        />
 
 
 

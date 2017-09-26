@@ -1,5 +1,6 @@
 package ru.kindlypay.kindlypay;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private User mUser;
     private EditText mPhone,mPassword;
     private Button mLogin;
-    private TextView mRegistration;
+    private TextView mRegistration,mErrorLogin;
     private boolean mEndSiteTransaction;
 
     @Override
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         mLogin=(Button)findViewById(R.id.login_button);
+        mErrorLogin=(TextView)findViewById(R.id.error_login);
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                     new FetchItemsTask().execute();
                     while (!mEndSiteTransaction){
 
+                    }
+                    if (mUser.getId()==0){
+                        mErrorLogin.setVisibility(TextView.VISIBLE);
                     }
 
                 } catch (Exception e) {
@@ -94,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Нажата кнопка");
+                Intent i=new Intent(LoginActivity.this,RegistrationActivity.class);
+                startActivity(i);
             }
         });
 
