@@ -13,7 +13,7 @@
     </style>
 
     <style name="kindlyButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@color/red</item>
+        <item name="android:background">@drawable/red_button_normal</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -23,5 +23,6 @@
 
     <style name="ErrorMessage">
         <item name="android:textColor">@color/red</item>
+        <item name="android:padding">0dp</item>
     </style>
 </resources>

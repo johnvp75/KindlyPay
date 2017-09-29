@@ -14,21 +14,24 @@
         android:layout_height="wrap_content"
         android:hint="@string/user_phone"
         android:inputType="phone" />
+
     <TextView
         android:id="@+id/registration_incorrect_phone"
         style="@style/ErrorMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:text="@string/incorrect_phone"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 
     <EditText
         android:id="@+id/registration_password"
-        android:inputType="textPassword"
+        android:paddingTop="31dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/password"/>
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/registration_password_rule"

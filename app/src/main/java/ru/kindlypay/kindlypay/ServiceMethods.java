@@ -31,7 +31,7 @@ public class ServiceMethods {
 
     public static boolean strongPassword(String password){
         Log.i(TAG,"Получен пароль:"+password);
-        Pattern p = Pattern.compile("(?=^.{6,}$)(?=.*\\d)(?=.*\\[а-я])(?=.*\\[А-Я])(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$ ");
+        Pattern p = Pattern.compile("^(?=.*\\d)((?=.*[a-z])|(?=.*[а-я]))((?=.*[A-Z])|(?=.*[А-Я])).{6,}$");
         Matcher m = p.matcher(password);
         return m.matches();
     }

@@ -25,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private User mUser;
     private EditText mPhone,mPassword;
     private Button mLogin;
-    private TextView mRegistration,mErrorLogin;
-    private boolean mEndSiteTransaction;
+    private TextView mRegistration,mErrorLogin,mWrongPhone;
+    private boolean isNotConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -35,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         mUser=new User();
 
 
-
+        mWrongPhone=(TextView)findViewById(R.id.login_incorrect_phone);
+        mLogin=(Button)findViewById(R.id.login_button);
         mPhone=(EditText)findViewById(R.id.login_user_phone);
         mPhone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -45,7 +46,17 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mUser.setPhoneNumber(s.toString());
+                String phone=ServiceMethods.correctPhone(s.toString());
+                if (phone!=null){
+                    mUser.setPhoneNumber(phone);
+                    if (mUser.getPassword()!=null&&mUser.getPassword().length()>5)
+                        mLogin.setEnabled(true);
+                    mWrongPhone.setVisibility(TextView.INVISIBLE);
+                }else{
+                    mWrongPhone.setVisibility(TextView.VISIBLE);
+                    mLogin.setEnabled(false);
+                }
+
 
             }
 
@@ -54,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
         mPassword=(EditText)findViewById(R.id.login_password);
         mPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,6 +76,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mUser.setPassword(s.toString());
+                if (s.toString().length()>5&&mUser.getPhoneNumber()!=null) {
+                    mLogin.setEnabled(true);
+                }else{
+                    mLogin.setEnabled(false);
+                }
 
             }
 
@@ -72,24 +89,32 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-        mLogin=(Button)findViewById(R.id.login_button);
+
         mErrorLogin=(TextView)findViewById(R.id.error_login);
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    mEndSiteTransaction=false;
-                    new FetchItemsTask().execute();
-                    while (!mEndSiteTransaction){
+                    mErrorLogin.setVisibility(TextView.INVISIBLE);
+                    FetchItemsTask conn=new FetchItemsTask();
+                    conn.execute();
+                    while (conn.getStatus()!= AsyncTask.Status.FINISHED){
 
+                    }
+                    if (isNotConnection) {
+                        Toast.makeText(LoginActivity.this,R.string.no_connection, Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "Нет соединения ");
+                        return;
                     }
                     if (mUser.getId()==0){
                         mErrorLogin.setVisibility(TextView.VISIBLE);
+                    }else
+                    {
+
                     }
 
                 } catch (Exception e) {
-                    Toast.makeText(LoginActivity.this,R.string.no_connection, Toast.LENGTH_SHORT);
-                    Log.e(TAG, "Return with error ", e);
+                    Log.e(TAG, "Ошибка запуска потока ", e);
                     e.printStackTrace();
                 }
             }
@@ -114,10 +139,11 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 String result = new KindlyPayFetchr()
                         .getUserId(mUser,getString(R.string.login));
-                mEndSiteTransaction=true;
+                isNotConnection=false;
                 Log.i(TAG, "Fetched contents of URL: " + result);
+
             } catch (IOException ioe) {
-                mEndSiteTransaction=true;
+                isNotConnection=true;
                 Log.e(TAG, "Failed to fetch URL: ", ioe);
             }
             return null;
