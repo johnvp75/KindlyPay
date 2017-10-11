@@ -7,6 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="25dp"
         android:text="@string/registration_title"/>
     <EditText
         android:id="@+id/registration_user_phone"
@@ -14,48 +15,18 @@
         android:layout_height="wrap_content"
         android:hint="@string/user_phone"
         android:inputType="phone" />
-
-    <TextView
-        android:id="@+id/registration_incorrect_phone"
-        style="@style/ErrorMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:text="@string/incorrect_phone"
-        android:visibility="invisible" />
-
-
     <EditText
         android:id="@+id/registration_password"
-        android:paddingTop="31dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/registration_password_rule"
-        style="@style/ErrorMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/rule_for_password"
-        android:visibility="invisible"/>
-
     <EditText
         android:id="@+id/registration_repeat_password"
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/repeat_password"/>
-
-    <TextView
-        android:id="@+id/registration_password_not_match"
-        style="@style/ErrorMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bad_repeat_password"
-        android:visibility="invisible"/>
-
     <Button
         android:id="@+id/registration_button"
         android:layout_width="wrap_content"

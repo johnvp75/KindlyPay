@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="6dp"
@@ -14,30 +14,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/user_phone"
         android:inputType="phone" />
-    <TextView
-        android:id="@+id/login_incorrect_phone"
-        style="@style/ErrorMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/incorrect_phone"
-        android:visibility="invisible" />
-
-
     <EditText
         android:id="@+id/login_password"
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"/>
-    <TextView
-        android:id="@+id/error_login"
-        style="@style/ErrorMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/error_login"
-        android:visibility="invisible"/>
-
-
     <Button
         android:id="@+id/login_button"
         android:enabled="false"
@@ -48,7 +30,7 @@
         android:id="@+id/registration_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
+        android:gravity="end"
         android:text="@string/registration_link"
         />
 </LinearLayout>

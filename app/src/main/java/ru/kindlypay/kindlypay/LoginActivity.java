@@ -3,6 +3,7 @@ package ru.kindlypay.kindlypay;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +27,11 @@ public class LoginActivity extends AppCompatActivity {
     private User mUser;
     private EditText mPhone,mPassword;
     private Button mLogin;
-    private TextView mRegistration,mErrorLogin,mWrongPhone;
+    private TextView mRegistration;
     private boolean isNotConnection;
+    private LinearLayout.LayoutParams paramWrongPhone,paramErrorLogin;
+
+    private FetchItemsTask conn=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,8 +39,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
         mUser=new User();
 
-
-        mWrongPhone=(TextView)findViewById(R.id.login_incorrect_phone);
         mLogin=(Button)findViewById(R.id.login_button);
         mPhone=(EditText)findViewById(R.id.login_user_phone);
         mPhone.addTextChangedListener(new TextWatcher() {
@@ -48,13 +51,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String phone=ServiceMethods.correctPhone(s.toString());
                 if (phone!=null){
+                    Log.i(TAG,"WrongPhone is Invisible");
                     mUser.setPhoneNumber(phone);
                     if (mUser.getPassword()!=null&&mUser.getPassword().length()>5)
                         mLogin.setEnabled(true);
-                    mWrongPhone.setVisibility(TextView.INVISIBLE);
+
                 }else{
-                    mWrongPhone.setVisibility(TextView.VISIBLE);
+                    Log.i(TAG,"WrongPhone is Visible");
+                    mPhone.setError(getString(R.string.incorrect_phone));
                     mLogin.setEnabled(false);
+
                 }
 
 
@@ -90,15 +96,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mErrorLogin=(TextView)findViewById(R.id.error_login);
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    mErrorLogin.setVisibility(TextView.INVISIBLE);
-                    FetchItemsTask conn=new FetchItemsTask();
+                    if (conn!=null)
+                        return;
+                    conn=new FetchItemsTask();
                     conn.execute();
-                    while (conn.getStatus()!= AsyncTask.Status.FINISHED){
+//                    while (conn.getStatus()!= AsyncTask.Status.FINISHED){
+                    while (conn!= null){
 
                     }
                     if (isNotConnection) {
@@ -107,10 +114,13 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                     if (mUser.getId()==0){
-                        mErrorLogin.setVisibility(TextView.VISIBLE);
+                        mPhone.setError(getString(R.string.error_login));
+                        mPassword.setError(getString(R.string.error_login));
                     }else
                     {
-
+                        Log.i(TAG,"Start user activity");
+                        Intent intent =new Intent(LoginActivity.this,UserPage.class);
+                        startActivity(intent);
                     }
 
                 } catch (Exception e) {
@@ -133,9 +143,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private class FetchItemsTask  extends AsyncTask<Void,Void,Void>{
+    private class FetchItemsTask  extends AsyncTask<Void,Void,Boolean>{
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             try {
                 String result = new KindlyPayFetchr()
                         .getUserId(mUser,getString(R.string.login));
@@ -146,8 +156,25 @@ public class LoginActivity extends AppCompatActivity {
                 isNotConnection=true;
                 Log.e(TAG, "Failed to fetch URL: ", ioe);
             }
-            return null;
+            return true;
         }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            conn = null;
+//            showProgress(false);
+
+            if (success) {
+                finish();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            conn = null;
+//            showProgress(false);
+        }
+
     }
 
 }

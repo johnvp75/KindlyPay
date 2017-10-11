@@ -15,7 +15,7 @@ public class User {
     private String generateKod;
 
     public User(){
-        generateKod=(new Integer((int) (Math.random()*1000000))).toString();
+        generateKod=(Integer.valueOf((int) (Math.random()*1000000))).toString();
     }
 
     public int getId() {

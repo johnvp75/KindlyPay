@@ -7,9 +7,21 @@
     <string name="login_button">Войти</string>
     <string name="no_connection">Отсутствует соединение с Интернетом</string>
     <string name="registration_link">Зарегистрироваться</string>
-    <string name="rule_for_password">Пароль должен содержать не менее 6 символов (буквы,цыфры и знак подчеркивания), обязательно одна цифра и одна заглавная буква</string>
+    <string name="rule_for_password">Пароль должен содержать не менее 6 символов, обязательно одна цифра и одна заглавная буква</string>
     <string name="bad_repeat_password">Пароли не совпадают!</string>
     <string name="registration_title">Регистрация</string>
     <string name="incorrect_phone">Введите корректный телефон</string>
+    <string name="title_activity_user_page">UserPageActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
 

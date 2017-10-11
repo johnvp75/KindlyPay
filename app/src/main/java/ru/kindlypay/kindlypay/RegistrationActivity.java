@@ -23,7 +23,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final String TAG ="RegistrationActivity";
 
     private User mUser;
-    private TextView mPasswordNotMatch,mPasswordNotStrong,mIncorrectPhone;
     private EditText mPhone,mPassword,mRepeatPassword;
     private Button mRegistrationButton;
     private boolean isStrongPassword,isMatchedPassword,isCorrectPhone;
@@ -37,11 +36,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mRegistrationButton=(Button)findViewById(R.id.registration_button);
         mPhone=(EditText)findViewById(R.id.registration_user_phone);
-        mIncorrectPhone=(TextView)findViewById(R.id.registration_incorrect_phone);
         mPassword=(EditText)findViewById(R.id.registration_password);
-        mPasswordNotStrong=(TextView)findViewById(R.id.registration_password_rule);
         mRepeatPassword=(EditText)findViewById(R.id.registration_repeat_password);
-        mPasswordNotMatch=(TextView)findViewById(R.id.registration_password_not_match);
 
         mPhone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,11 +51,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (mPhoneTemp==null){
                     Log.i(TAG,"Проверка телефона не прошла");
                     isCorrectPhone=false;
-                    mIncorrectPhone.setVisibility(TextView.VISIBLE);
+                    mPhone.setError(getString(R.string.incorrect_phone));
                 }
                 else {
                     Log.i(TAG,"Проверка телефона прошла");
-                    mIncorrectPhone.setVisibility(TextView.INVISIBLE);
                     isCorrectPhone=true;
                     mUser.setPhoneNumber(mPhoneTemp);
                 }
@@ -84,18 +79,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (isStrongPassword){
                     Log.i(TAG,"Проверка пароля прошла");
                     mUser.setPassword(s.toString());
-                    mPasswordNotStrong.setVisibility(TextView.INVISIBLE);
                     if (mRepeatPassword.getText().toString().length()>0){
                         if(s.toString().equals(mRepeatPassword.getText().toString())){
                             isMatchedPassword=true;
-                            mPasswordNotMatch.setVisibility(TextView.INVISIBLE);
                         }else{
                             isMatchedPassword=false;
                         }
                     }
                 }else{
                     Log.i(TAG,"Проверка пароля не прошла");
-                    mPasswordNotStrong.setVisibility(TextView.VISIBLE);
+                    mPassword.setError(getString(R.string.rule_for_password));
                 }
                 checkStateForButton();
             }
@@ -116,11 +109,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (mUser.getPassword().equals(s.toString())){
                     Log.i(TAG,"Сравнение паролей прошло");
                     isMatchedPassword=true;
-                    mPasswordNotMatch.setVisibility(TextView.INVISIBLE);
                 }else {
                     Log.i(TAG,"Сравнение паролей не прошло");
                     isMatchedPassword=false;
-                    mPasswordNotMatch.setVisibility(TextView.VISIBLE);
+                    mRepeatPassword.setError(getString(R.string.bad_repeat_password));
 
                 }
 
